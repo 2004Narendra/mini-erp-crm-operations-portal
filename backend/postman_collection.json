@@ -1,0 +1,57 @@
+{
+  "info": {
+    "name": "Mini ERP CRM API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/auth/login",
+              "host": ["http://localhost:5000"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        { "name": "List Customers", "request": { "method": "GET", "url": { "raw": "http://localhost:5000/customers", "host": ["http://localhost:5000"], "path": ["customers"] } } },
+        { "name": "Create Customer", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"ABC Traders\",\n  \"mobile\": \"9999999999\",\n  \"businessName\": \"ABC Traders\",\n  \"customerType\": \"Wholesale\",\n  \"status\": \"Active\"\n}" }, "url": { "raw": "http://localhost:5000/customers", "host": ["http://localhost:5000"], "path": ["customers"] } } }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        { "name": "List Products", "request": { "method": "GET", "url": { "raw": "http://localhost:5000/products", "host": ["http://localhost:5000"], "path": ["products"] } } }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        { "name": "Inventory", "request": { "method": "GET", "url": { "raw": "http://localhost:5000/inventory", "host": ["http://localhost:5000"], "path": ["inventory"] } } },
+        { "name": "Movements", "request": { "method": "GET", "url": { "raw": "http://localhost:5000/inventory/movements", "host": ["http://localhost:5000"], "path": ["inventory", "movements"] } } },
+        { "name": "Low Stock", "request": { "method": "GET", "url": { "raw": "http://localhost:5000/inventory/low-stock", "host": ["http://localhost:5000"], "path": ["inventory", "low-stock"] } } }
+      ]
+    },
+    {
+      "name": "Challans",
+      "item": [
+        { "name": "List Challans", "request": { "method": "GET", "url": { "raw": "http://localhost:5000/challans", "host": ["http://localhost:5000"], "path": ["challans"] } } },
+        { "name": "Create Challan", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"customerId\": \"<customer-id>\",\n  \"status\": \"Draft\",\n  \"items\": [{\n    \"productId\": \"<product-id>\",\n    \"productName\": \"Keyboard\",\n    \"sku\": \"KEY-001\",\n    \"unitPrice\": 1200,\n    \"quantity\": 10\n  }]\n}" }, "url": { "raw": "http://localhost:5000/challans", "host": ["http://localhost:5000"], "path": ["challans"] } } }
+      ]
+    }
+  ]
+}

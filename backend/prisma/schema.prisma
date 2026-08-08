@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  role         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  customers    Customer[]
+  stockMovements StockMovement[]
+  challans     Challan[]
+}
+
+model Customer {
+  id             String         @id @default(uuid())
+  name           String
+  mobile         String
+  email          String?
+  businessName   String?
+  gstNumber      String?
+  customerType   String
+  address        String?
+  status         String
+  followUpDate   DateTime?
+  notes          String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  createdById    String
+  createdBy      User           @relation(fields: [createdById], references: [id])
+  followUps      CustomerFollowUp[]
+  challans       Challan[]
+}
+
+model CustomerFollowUp {
+  id          String   @id @default(uuid())
+  customerId  String
+  customer    Customer @relation(fields: [customerId], references: [id])
+  note        String
+  createdAt   DateTime @default(now())
+}
+
+model Product {
+  id                String          @id @default(uuid())
+  name              String
+  sku               String          @unique
+  category          String
+  unitPrice         Decimal         @db.Decimal(10, 2)
+  currentStock      Int
+  minimumStock      Int
+  warehouse         String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  stockMovements    StockMovement[]
+  challanItems      ChallanItem[]
+}
+
+model StockMovement {
+  id           String   @id @default(uuid())
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id])
+  quantity     Int
+  movementType String
+  reason       String?
+  createdById  String
+  createdBy    User     @relation(fields: [createdById], references: [id])
+  createdAt    DateTime @default(now())
+}
+
+model Challan {
+  id            String        @id @default(uuid())
+  challanNumber String        @unique
+  customerId    String
+  customer      Customer      @relation(fields: [customerId], references: [id])
+  totalQuantity Int
+  status        String
+  createdById   String
+  createdBy     User          @relation(fields: [createdById], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  items         ChallanItem[]
+}
+
+model ChallanItem {
+  id            String   @id @default(uuid())
+  challanId     String
+  challan       Challan   @relation(fields: [challanId], references: [id])
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id])
+  productName   String
+  sku           String
+  unitPrice     Decimal  @db.Decimal(10, 2)
+  quantity      Int
+  createdAt     DateTime @default(now())
+}
